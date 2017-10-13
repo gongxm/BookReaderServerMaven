@@ -1,6 +1,8 @@
 package com.gongxm.utils;
 
 public class MyConstants {
+	//是否调试程序
+	public static final boolean DEBUG = false;
 
 	public static final String DEFAULT_ENCODING = "UTF-8";
 	public static final int FAILURE = 0;

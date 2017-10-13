@@ -17,8 +17,6 @@ public class BaseDao<T> extends HibernateDaoSupport implements Dao<T> {
 	protected HibernateTemplate hqlObj; // hql执行对象
 	@Autowired
 	protected JdbcTemplate sqlObj; // 普通sql执行对象
-	
-	//private static Map<String,SolrClient> clients = new HashMap<String,SolrClient>();
 
 	public BaseDao() {
 		ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
@@ -56,15 +54,5 @@ public class BaseDao<T> extends HibernateDaoSupport implements Dao<T> {
 		return (T) hqlObj.get(clazz, id);
 	}
 	
-	/*public SolrClient getSolrClient(String url) {
-		SolrClient solrClient = clients.get(url);
-		if(solrClient==null) {
-			Builder builder =new Builder(url);
-			HttpSolrClient client = builder.build();
-			clients.put(url, client);
-			return client;
-		}
-		return solrClient;
-	}*/
 
 }

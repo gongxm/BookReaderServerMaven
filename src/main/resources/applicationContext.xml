@@ -8,7 +8,7 @@ xsi:schemaLocation="
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<!-- 加载配置文件 -->
-	<context:property-placeholder location="classpath:db.properties" />
+	<context:property-placeholder location="classpath*:*.properties" />
 	<!-- 开启注解扫描 @Respostory @Service @Controller -->
 	<context:component-scan base-package="com.gongxm" />
 
@@ -84,7 +84,6 @@ xsi:schemaLocation="
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!-- 事务注解驱动 -->
-	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
-
+	<tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>

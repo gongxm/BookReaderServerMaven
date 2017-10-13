@@ -44,4 +44,11 @@ public class BookServiceImpl extends BaseService<Book> implements BookService {
 		return dao.findByBookUrl(url);
 	}
 
+	@Override
+	public void deleteById(int id) {
+		dao.deleteById(id);
+	}
+	
+	
+
 }

@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -43,12 +44,14 @@ public class MyTest {
 	@Autowired
 	BookChapterService chapterService;
 	
+	@Value("${book_list}")
+	private String book_list;
+	
 	@Test
 	public void test1() {
-		/*Book book = new Book("测试版", "我", "测试", "完本", "http://www.baidu.com", "暂无", "http://www.gongxm.com");
-		BookChapter ch = new BookChapter("第一章", "http://www.gongxm.com/001", 1);
-		book.getChapters().add(ch);
+		/*Book book = new Book("测试", "gongxm", "测试", "完成", "wwwwwwwww", "sssssssss", "http://www.gongxm.com");
 		bookService.add(book);*/
+		
 	}
 	
 	@Test
