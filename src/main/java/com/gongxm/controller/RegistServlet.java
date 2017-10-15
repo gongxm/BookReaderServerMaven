@@ -15,7 +15,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.gongxm.bean.User;
 import com.gongxm.services.UserService;
 import com.gongxm.utils.BeanFillUtils;
-import com.gongxm.utils.MD5Util;
+import com.gongxm.utils.MD5Utils;
 import com.gongxm.utils.MyConstants;
 
 /**
@@ -55,7 +55,7 @@ public class RegistServlet extends HttpServlet {
 		User newUser=new User();
 		newUser.setUsername(username);
 		newUser.setPermissions(MyConstants.ROLE_USER);
-		newUser.setPassword(MD5Util.MD5(password));
+		newUser.setPassword(MD5Utils.MD5(password));
 		userService.addUser(newUser);
 		writer.write("<h1 align='center'><font color='green' size=5>注册成功!</font><br/></h1>");
 		response.setHeader("refresh", "2;url="+request.getContextPath()+"/login.jsp");

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.gongxm.bean.Book;
 
-public interface BookService extends Service<Book>{
+public interface BookService extends Service<Book> {
 
 	List<String> getBookCategory();
 
@@ -12,8 +12,8 @@ public interface BookService extends Service<Book>{
 
 	List<Book> findListByKeyword(String keyword, int currentPage, int pageSize);
 
-	Book findByBookUrl(String url);
-	
+	public Book findByBookId(String uuid);
+
 	void deleteById(int id);
 
 }

@@ -3,8 +3,6 @@ package com.gongxm.bean;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -18,12 +16,11 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table(name = "book_chapter_content")
-public class BookChapterContent implements Serializable{
+public class BookChapterContent implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
-	private int id;
+	private String id;
 
 	@Type(type = "text")
 	@Expose
@@ -33,16 +30,17 @@ public class BookChapterContent implements Serializable{
 		super();
 	}
 
-	public BookChapterContent(String text) {
+	public BookChapterContent(String chapterId, String text) {
 		super();
+		this.id = chapterId;
 		this.text = text;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -52,6 +50,11 @@ public class BookChapterContent implements Serializable{
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	@Override
+	public String toString() {
+		return "BookChapterContent [id=" + id + ", text=" + text + "]";
 	}
 
 }

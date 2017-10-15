@@ -1,74 +1,51 @@
 package com.gongxm.bean;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
-import com.google.gson.annotations.Expose;
 
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "books")
 public class Book implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	// @Expose(serialize = true, deserialize = false) // serialize:
 	// 可以被序列化,deserialize:可以被反序列化
 	@Expose // @Expose:默认为同时可以序列化和反序列化
-	private int id;
-	@Column
+	private String id;
 	@Expose
 	private String book_name;
-	@Column
 	@Expose
 	private String author;
-	@Column
 	@Expose
 	private String category;
-	@Column
 	@Expose
 	private String cover;
-	@Column
 	@Expose
 	private String status;
-	@Column
 	@Expose
 	private String book_link;
-	@Column
 	@Type(type = "text")
 	@Expose
 	private String shortIntroduce;
-
-	@OneToMany(targetEntity = BookChapter.class)
-	@Fetch(FetchMode.SELECT)
-	@LazyCollection(LazyCollectionOption.EXTRA)
-	@JoinColumn(name = "book_id")
-	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
-	private Set<BookChapter> chapters = new HashSet<BookChapter>();
+	@Expose
+	private int rulesId; // 采集规则ID
+	@Expose
+	private int collectStatus;// 采集状态
 
 	public Book() {
 	}
 
-	public Book(String book_name, String author, String category, String status, String cover, String shortIntroduce,
-			String book_link) {
+	public Book(String bookId, String book_name, String author, String category, String status, String cover,
+			String shortIntroduce, String book_link, int rulesId) {
 		super();
+		this.id = bookId;
 		this.book_name = book_name;
 		this.category = category;
 		this.author = author;
@@ -76,13 +53,14 @@ public class Book implements Serializable {
 		this.status = status;
 		this.shortIntroduce = shortIntroduce;
 		this.book_link = book_link;
+		this.rulesId = rulesId;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -142,19 +120,27 @@ public class Book implements Serializable {
 		this.status = status;
 	}
 
-	public Set<BookChapter> getChapters() {
-		return chapters;
+	public int getRulesId() {
+		return rulesId;
 	}
 
-	public void setChapters(Set<BookChapter> chapters) {
-		this.chapters = chapters;
+	public void setRulesId(int rulesId) {
+		this.rulesId = rulesId;
 	}
 
+	public int getCollectStatus() {
+		return collectStatus;
+	}
+
+	public void setCollectStatus(int collectStatus) {
+		this.collectStatus = collectStatus;
+	}
 
 	@Override
 	public String toString() {
-		return "Book [book_name=" + book_name + ", author=" + author + ", category=" + category + ", cover=" + cover
-				+ ", status=" + status + ", book_link=" + book_link + ", shortIntroduce=" + shortIntroduce + "]";
+		return "Book [id=" + id + ", book_name=" + book_name + ", author=" + author + ", category=" + category
+				+ ", cover=" + cover + ", status=" + status + ", book_link=" + book_link + ", shortIntroduce="
+				+ shortIntroduce + "]";
 	}
 
 }

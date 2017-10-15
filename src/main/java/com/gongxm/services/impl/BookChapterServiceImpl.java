@@ -24,7 +24,7 @@ public class BookChapterServiceImpl extends BaseService<BookChapter> implements 
 	}
 
 	@Override
-	public List<BookChapter> findByBookId(int bookid) {
+	public List<BookChapter> findByBookId(String bookid) {
 		return dao.findByBookId(bookid);
 	}
 
@@ -39,8 +39,18 @@ public class BookChapterServiceImpl extends BaseService<BookChapter> implements 
 	}
 
 	@Override
+	public BookChapter findByChapterId(String uuid) {
+		return dao.findByChapterId(uuid);
+	}
+
+	@Override
+	public int findChapterCountByBookId(String bookId) {
+		return dao.findChapterCountByBookId(bookId);
+	}
+
+	/*@Override
 	public BookChapter findByChapterLink(String chapterLink) {
 		return dao.findByChapterLink(chapterLink);
-	}
+	}*/
 
 }

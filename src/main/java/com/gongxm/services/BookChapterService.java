@@ -6,12 +6,15 @@ import com.gongxm.bean.BookChapter;
 
 public interface BookChapterService extends Service<BookChapter> {
 
-	List<BookChapter> findByBookId(int bookid);
+	List<BookChapter> findByBookId(String bookid);
 
 	long getUnCollectChapterCount();
 
 	List<BookChapter> findUnCollectChapter(int currentPage, int pageSize);
 
-	BookChapter findByChapterLink(String chapterLink);
+	BookChapter findByChapterId(String uuid);
+//	BookChapter findByChapterLink(String chapterLink);
+
+	int findChapterCountByBookId(String bookId);
 
 }

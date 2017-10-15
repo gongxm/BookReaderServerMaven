@@ -42,7 +42,7 @@ public class UUIDUtils {
 	 */
 	public static String createClubId(){
 		String key = createKey();
-		String clubId = MD5Util.MD5Encode(key, "utf-8");
+		String clubId = MD5Utils.MD5Encode(key, "utf-8");
 		return clubId.substring(0,16);
 	}
 	
@@ -51,7 +51,7 @@ public class UUIDUtils {
 	 */
 	public static String createProjectId(){
 		String key = createKey();
-		String projectId = MD5Util.MD5Encode(key, "utf-8");
+		String projectId = MD5Utils.MD5Encode(key, "utf-8");
 		return projectId.substring(2,18);
 	}
 

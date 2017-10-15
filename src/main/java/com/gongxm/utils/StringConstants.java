@@ -13,7 +13,10 @@ public interface StringConstants {
 	String BOOK_CHAPTER_NOT_FOUND = "找不到该书籍对应的章节!";
 
 	String BOOK_CHAPTER_UNCOLLECT = "内容未采集!";
+	String BOOK_UPDATE_SUCCESS = "更新成功!";
 	
 	String RULES_ID_ERROR = "规则ID异常!";
+
+	String BOOK_COLLECTE_ING = "正在采集中";
 
 }

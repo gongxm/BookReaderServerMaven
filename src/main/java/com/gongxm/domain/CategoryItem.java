@@ -3,7 +3,7 @@ package com.gongxm.domain;
 import com.gongxm.bean.Book;
 
 public class CategoryItem {
-	private int id;
+	private String id;
 	private String book_name;
 	private String author;
 	private String cover;
@@ -18,11 +18,11 @@ public class CategoryItem {
 		this.cover = book.getCover();
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

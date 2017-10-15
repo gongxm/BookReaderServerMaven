@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import com.gongxm.encode.BASE64Decoder;
 import com.gongxm.encode.BASE64Encoder;
 
-public class MD5Util {
+public class MD5Utils {
 	public static String base64Encoding(String str) {
 		byte[] b = str.getBytes();
 		return new BASE64Encoder().encode(b);
@@ -67,5 +67,12 @@ public class MD5Util {
 
 	private static final String hexDigits[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d",
 			"e", "f" };
+	
+	
+	public static String creatID(String str) {
+		String md5 = MD5(str);
+		String encoding = base64Encoding(md5);
+		return encoding;
+	}
 
 }

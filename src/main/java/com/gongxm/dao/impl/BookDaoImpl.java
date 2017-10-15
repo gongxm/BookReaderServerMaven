@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -22,10 +24,14 @@ import com.gongxm.utils.TextUtils;
 import redis.clients.jedis.Jedis;
 
 @Repository("bookDao")
+@Transactional
 public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 
 	@Value("${book_list}")
 	private String book_list;
+	
+	@Value("${chapter_list}")
+	private String chapter_list;
 
 	@Override
 	public void add(Book book) {
@@ -33,7 +39,7 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 		// 把数据添加到缓存中
 		try {
 			Jedis jedis = RedisUtils.getJedis();
-			jedis.hset(book_list, book.getBook_link(), GsonUtils.toJson(book));
+			jedis.hset(book_list, book.getId(), GsonUtils.toJson(book));
 			jedis.close();
 		} catch (Exception e) {
 			if (MyConstants.DEBUG) {
@@ -48,7 +54,8 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 		// 从缓存中删除数据
 		try {
 			Jedis jedis = RedisUtils.getJedis();
-			jedis.hdel(book_list, book.getBook_link());
+			jedis.hdel(book_list, book.getId());//删除书籍信息
+			jedis.hdel(chapter_list, book.getId());//删除书籍章节列表缓存
 			jedis.close();
 		} catch (Exception e) {
 			if (MyConstants.DEBUG) {
@@ -100,13 +107,12 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 	
 	
 
-	@Override
-	public Book findByBookUrl(String url) {
+	public Book findByUuid(String uuid) {
 
 		// 先从缓存中查询
 		try {
 			Jedis jedis = RedisUtils.getJedis();
-			String json = jedis.hget(book_list, url);
+			String json = jedis.hget(book_list, uuid);
 			jedis.close();
 			if (TextUtils.notEmpty(json)) {
 				Book book = GsonUtils.fromJson(json, Book.class);
@@ -118,19 +124,21 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 			}
 		}
 
-		String sql = "select * from books where book_link=?";
+		String sql = "select * from books where id=?";
 		Book book = null;
 		try {
-			book = sqlObj.queryForObject(sql, new BookMap(), url);
+			book = sqlObj.queryForObject(sql, new BookMap(), uuid);
 		} catch (DataAccessException e) {
-			e.printStackTrace();
+			if (MyConstants.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 
 		if (book != null) {
 			// 把数据添加到缓存中
 			try {
 				Jedis jedis = RedisUtils.getJedis();
-				jedis.hset(book_list, url, GsonUtils.toJson(book));
+				jedis.hset(book_list, uuid, GsonUtils.parseToJson(book));
 				jedis.close();
 			} catch (Exception e) {
 				if (MyConstants.DEBUG) {
@@ -145,7 +153,7 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 		@Override
 		public Book mapRow(ResultSet rs, int i) throws SQLException {
 			Book book = new Book();
-			book.setId(rs.getInt("id"));
+			book.setId(rs.getString("id"));
 			book.setAuthor(rs.getString("author"));
 			book.setBook_link(rs.getString("book_link"));
 			book.setBook_name(rs.getString("book_name"));
@@ -153,6 +161,8 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 			book.setCover(rs.getString("cover"));
 			book.setShortIntroduce(rs.getString("shortIntroduce"));
 			book.setStatus(rs.getString("status"));
+			book.setRulesId(rs.getInt("rulesId"));
+			book.setCollectStatus(rs.getInt("collectStatus"));
 			return book;
 		}
 
@@ -167,7 +177,7 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 			// 从缓存中删除数据
 			try {
 				Jedis jedis = RedisUtils.getJedis();
-				jedis.hdel(book_list, book.getBook_link());
+				jedis.hdel(book_list, book.getId());
 				jedis.close();
 			} catch (Exception e) {
 				if (MyConstants.DEBUG) {
@@ -176,4 +186,5 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 			}
 		}
 	}
+
 }

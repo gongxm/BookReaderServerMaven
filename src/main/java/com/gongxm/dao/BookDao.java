@@ -12,8 +12,8 @@ public interface BookDao extends Dao<Book> {
 
 	List<Book> findListByKeyword(String keyword, int currentPage, int pageSize);
 
-	Book findByBookUrl(String url);
-
 	void deleteById(int id);
+
+	public Book findByUuid(String uuid);
 
 }

@@ -15,7 +15,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.gongxm.bean.User;
 import com.gongxm.services.UserService;
-import com.gongxm.utils.MD5Util;
+import com.gongxm.utils.MD5Utils;
 import com.gongxm.utils.MyConstants;
 
 @WebServlet(description = "用户登陆", urlPatterns = { "/loginServlet" })
@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		password = MD5Util.MD5(password);
+		password = MD5Utils.MD5(password);
 		
 		User user = userService.findUser(username, password);
 		
@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 		if (request.getParameter(MyConstants.REMEMBER) != null) {
-			Cookie cookie = new Cookie("user", MD5Util.base64Encoding(username)
+			Cookie cookie = new Cookie("user", MD5Utils.base64Encoding(username)
 					+ "_" + password);
 			cookie.setPath(request.getContextPath());
 			cookie.setMaxAge(Integer.MAX_VALUE);

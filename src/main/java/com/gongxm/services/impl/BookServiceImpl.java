@@ -40,8 +40,8 @@ public class BookServiceImpl extends BaseService<Book> implements BookService {
 	}
 
 	@Override
-	public Book findByBookUrl(String url) {
-		return dao.findByBookUrl(url);
+	public Book findByBookId(String uuid) {
+		return dao.findByUuid(uuid);
 	}
 
 	@Override
