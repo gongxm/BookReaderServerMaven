@@ -2,13 +2,8 @@ package com.gongxm.test;
 
 import java.io.IOException;
 
-import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
-import org.apache.commons.dbutils.QueryRunner;
-import org.hibernate.Hibernate;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +11,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 
-import com.gongxm.bean.Book;
 import com.gongxm.bean.BookChapter;
-import com.gongxm.bean.BookChapterContent;
 import com.gongxm.dao.BookDao;
 import com.gongxm.services.BookChapterContentService;
 import com.gongxm.services.BookChapterService;
@@ -30,9 +21,7 @@ import com.gongxm.services.BookListService;
 import com.gongxm.services.BookService;
 import com.gongxm.services.UserService;
 import com.gongxm.utils.GsonUtils;
-import com.gongxm.utils.HtmlParser;
 import com.gongxm.utils.MD5Utils;
-import com.gongxm.utils.ThreadPoolUtils;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class MyTest {

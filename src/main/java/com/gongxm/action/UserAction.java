@@ -69,7 +69,7 @@ public class UserAction extends BaseAction {
 							user = new User();
 							user.setOpenid(openid);
 							user.setSession_key(session_key);
-							user.setPermissions(MyConstants.ROLE_USER);
+							user.setPermissions(MyConstants.ROLE_TEST);
 							user.setRegistTime(TimeUtils.getCurrentTime());
 							user.setThirdSession(thirdSession);
 

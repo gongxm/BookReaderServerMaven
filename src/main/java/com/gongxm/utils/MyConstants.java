@@ -9,6 +9,7 @@ public class MyConstants {
 	public static final int SUCCESS = 1;
 
 	// 用户权限
+	public static final String ROLE_TEST = "TEST"; // 测试用户
 	public static final String ROLE_USER = "USER"; // 普通用户
 	public static final String ROLE_ROOT = "ROOT"; // 超级管理员
 
