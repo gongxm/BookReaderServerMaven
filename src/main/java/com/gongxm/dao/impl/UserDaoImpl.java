@@ -2,6 +2,7 @@ package com.gongxm.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -72,7 +73,7 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
 			user.setPermissions(rs.getString("permissions"));
 			user.setPhone(rs.getString("phone"));
 			user.setProvince(rs.getString("province"));
-			user.setRegistTime(rs.getDate("registTime"));
+			user.setRegistTime(new Date(rs.getTimestamp("registTime").getTime()));
 			user.setSession_key(rs.getString("session_key"));
 			user.setThirdSession(rs.getString("thirdSession"));
 			user.setUsername(rs.getString("username"));
