@@ -8,13 +8,14 @@ textarea{ resize:none; width:200px; height:35px;}
 
 .table_inner {
 	border: 1px dotted #f3c3f3;
-	width: 800px;
+	width: 500px;
 	font-size: 18px;
 	table-layout: fixed;
 	padding: 5px;
 	cellspacing: 0;
 	cellpadding: 0;
 }
+
 
 .table_width {
 	width: 600px;
@@ -44,6 +45,8 @@ h1 {
 
 .href_none {
 	text-decoration: none;
+	font-weight:bold;
+	color: blue;
 }
 
 .table_margin {

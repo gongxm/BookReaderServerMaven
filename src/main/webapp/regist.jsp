@@ -42,7 +42,7 @@
 
 			};
 			xhr.open('get',
-					"${pageContext.request.contextPath}/validateUserName?username="
+					"${pageContext.request.contextPath}/action/validateUserName?username="
 							+ username)
 			xhr.send(null);
 			return true;
@@ -102,32 +102,33 @@
 					onsubmit="return check()" method="post">
 					<table class="table_inner" style="table-layout: fixed;">
 						<tr>
-							<td style="width: 120px" align="center">用户名:</td>
-							<td style="width: 120px" align="center"><input id="username" type="text" name="username"
+							<td style="width: 40px" align="left">用户名:</td>
+							<td style="width: 80px" align="center"><input id="username" type="text" name="username"
 								value="${sessionScope.user.username}" onBlur="checkUserName()" />
 							</td>
-							<td style="width: 200px" align="left"><div id="user_name_tips"></div></td>
+							<td style="width: 100px" align="left"><div id="user_name_tips"></div></td>
 						</tr>
 						<tr>
-							<td style="width: 120px" align="center">密码:</td>
-							<td style="width: 120px" align="center"><input id="password" type="password" name="password"
+							<td style="width: 40px" align="left">密码:</td>
+							<td style="width: 80px" align="center"><input id="password" type="password" name="password"
 								value="${sessionScope.user.password}" onBlur="checkPassword()" />
 							</td>
-							<td style="width: 200px" align="left"><div id="password_tips"></div></td>
+							<td style="width: 100px" align="left"><div id="password_tips"></div></td>
 						</tr>
 						<tr>
-							<td style="width: 120px" align="center">确认密码:</td>
-							<td style="width: 120px" align="center"><input id="repassword" type="password" name="repassword"
+							<td style="width: 40px" align="left">确认密码:</td>
+							<td style="width: 80px" align="center"><input id="repassword" type="password" name="repassword"
 								onBlur="checkRePassword()" /></td>
-							<td><div id="repassword_tips"></div></td>
+							<td style="width: 100px" align="left"><div id="repassword_tips"></div></td>
 						</tr>
 						<tr>
-							<td align="center" colspan="2"><input type="reset" value="清空" />       <input type="submit" value="注册" /></td>
+							<td style="width: 40px" align="left"> <input type="reset" value="清空" /></td>
+							<td style='width: 80px' align="center"> <input type="submit" value="注册" /></td>
 						</tr>
 						<tr>
 							<td align="center" colspan="2"><a
 								href="${pageContext.request.contextPath}"><font color="#00f">回到主页</font></a>       <a
-								href="${pageContext.request.contextPath}/login.jsp"><font color="#f00" style="font-weight:bold;">已有账号,去登陆</font></a></td>
+								href="${pageContext.request.contextPath}/login.jsp"><font color="#f00" style="font-weight:bold;">已有账号,去登陆!</font></a></td>
 						</tr>
 					</table>
 				</form>

@@ -6,6 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
+import org.apache.commons.dbutils.QueryRunner;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,16 +15,18 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import com.gongxm.dao.Dao;
+
 @Transactional
 public class BaseDao<T> extends HibernateDaoSupport implements Dao<T> {
 	private Class<?> clazz;
 	protected HibernateTemplate hqlObj; // hql执行对象
 	@Autowired
 	protected JdbcTemplate sqlObj; // 普通sql执行对象
-	
+
 	@Autowired
 	protected DataSource dataSource;
 
+	QueryRunner qr;
 
 	public BaseDao() {
 		ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
@@ -35,6 +38,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements Dao<T> {
 	public void setSuperSessionFactory(SessionFactory factory) {
 		super.setSessionFactory(factory);
 		this.hqlObj = getHibernateTemplate();
+		qr = new QueryRunner(dataSource);
 	}
 
 	@Override
@@ -60,6 +64,5 @@ public class BaseDao<T> extends HibernateDaoSupport implements Dao<T> {
 	public T findById(Serializable id) {
 		return (T) hqlObj.get(clazz, id);
 	}
-	
 
 }

@@ -1,6 +1,10 @@
 package com.gongxm.action;
 
+import java.io.IOException;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
@@ -196,6 +200,24 @@ public class UserAction extends BaseAction {
 		}
 		String json = GsonUtils.toJson(result);
 		write(json);
+	}
+	
+	
+	//退出账号
+	@Action("logout")
+	public void logout() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.getSession().removeAttribute("user");
+		Cookie cookie=new Cookie("user","");
+		cookie.setPath(request.getContextPath());
+		cookie.setMaxAge(0);
+		
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.addCookie(cookie);
+		response.setCharacterEncoding(MyConstants.DEFAULT_ENCODING);
+		response.setContentType("text/html;charset=" + MyConstants.DEFAULT_ENCODING);
+		response.getWriter().write("<h1 align='center'><font color='green' size=5>注销成功！2秒后转到主页！</font></h1>");
+		response.setHeader("refresh", "2;url="+request.getContextPath());
 	}
 
 }

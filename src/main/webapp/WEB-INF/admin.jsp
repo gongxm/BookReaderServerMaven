@@ -19,9 +19,6 @@
 	}
 </script>
 
-<style type="text/css">
-</style>
-
 </head>
 <body>
 	<h1>网站后台</h1>
@@ -42,7 +39,8 @@
 
 
 	<div class="go_to_index">
-		<a class="href_none" href="${pageContext.request.contextPath}/">回到主页</a>
+		<a class="href_none" href="${pageContext.request.contextPath}/">返回主页</a>
+		<a class="href_none" href="${pageContext.request.contextPath}/action/logout">退出账号</a>
 	</div>
 </body>
 </html>

@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import org.springframework.dao.DataAccessException;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -17,45 +17,41 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
 	@Override
 	public User findUserByName(String username) {
 		String sql = "select * from user where username=?";
-		User user = null;
 		try {
-			user = sqlObj.queryForObject(sql, new UserMap(), username);
-		} catch (DataAccessException e) {
+			return qr.query(sql, new BeanHandler<User>(User.class),username);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
-		return user;
 	}
 
 	@Override
 	public User findUser(String username, String password) {
 		String sql = "select * from user where username=? and password=?";
-		User user = null;
 		try {
-			user = sqlObj.queryForObject(sql, new UserMap(), username, password);
-		} catch (DataAccessException e) {
+			return qr.query(sql, new BeanHandler<User>(User.class),username,password);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
-		return user;
 	}
 
 	@Override
 	public User findUserByThirdSession(String thirdSession) {
 		String sql = "select * from user where thirdSession=?";
-		User user = null;
 		try {
-			user = sqlObj.queryForObject(sql, new UserMap(), thirdSession);
-		} catch (DataAccessException e) {
+			return qr.query(sql, new BeanHandler<User>(User.class),thirdSession);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
-		return user;
 	}
 
 	@Override
 	public User findUserByOpenId(String openid) {
 		String sql = "select * from user where openid=?";
-		User user = null;
 		try {
-			user = sqlObj.queryForObject(sql, new UserMap(), openid);
-		} catch (DataAccessException e) {
+			return qr.query(sql, new BeanHandler<User>(User.class),openid);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
-		return user;
 	}
 
 	class UserMap implements RowMapper<User> {

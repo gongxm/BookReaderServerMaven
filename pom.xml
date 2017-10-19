@@ -33,6 +33,9 @@
 				<configuration>
 					<port>8080</port>
 					<path>/BookReaderServer</path>
+					<url>http://www.gongxm.com/manager/text</url>
+					<username>gongxm</username>
+					<password>99886128gxm</password>
 				</configuration>
 			</plugin>
 		</plugins>

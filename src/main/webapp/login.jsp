@@ -16,25 +16,31 @@
 	<table class="table_center">
 		<tr>
 			<td align="center">
-				<form
-					action="${pageContext.request.contextPath}/loginServlet"
+				<form action="${pageContext.request.contextPath}/loginServlet"
 					method="post">
 					<table class="table_inner">
 						<tr>
-							<td style="width: 80px" align="center">用户名:<input type="text" name="username" /></td>
+							<td style="width: 80px" align="center">用户名:<input
+								type="text" name="username" /></td>
 						</tr>
 						<tr>
-							<td style="width: 80px" align="center">密 码  :<input type="password" name="password" /></td>
+							<td style="width: 80px" align="center">密 码 :<input
+								type="password" name="password" /></td>
 						</tr>
 						<tr>
 							<td align="center"><input type="checkbox" name="remember" />记住我</td>
 						</tr>
 						<tr>
-							<td align="center"><input type="reset" value="清空" />  <input type="submit" value="登陆" /></td>
+							<td align="center"><input type="reset" value="清空" /> <input
+								type="submit" value="登陆" /></td>
 						</tr>
 
 						<tr>
-							<td align="center"><a href="${pageContext.request.contextPath}"><font color="#00f">回到主页</font></a>  <a class="href_none" href="${pageContext.request.contextPath}/regist.jsp"><font color="#f00" style="font-weight:bold;">还没有账号？去注册</font></a></td>
+							<td align="center"><a
+								href="${pageContext.request.contextPath}"><font color="#00f">返回主页</font></a>
+								<a class="href_none"
+								href="${pageContext.request.contextPath}/regist.jsp"><font
+									color="#f00" style="font-weight: bold;">还没有账号？去注册!</font></a></td>
 						</tr>
 					</table>
 				</form>
