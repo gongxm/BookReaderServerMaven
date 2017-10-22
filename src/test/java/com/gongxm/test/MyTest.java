@@ -1,6 +1,7 @@
 package com.gongxm.test;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -13,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gongxm.bean.BookChapter;
+import com.gongxm.bean.User;
 import com.gongxm.dao.BookDao;
 import com.gongxm.services.BookChapterContentService;
 import com.gongxm.services.BookChapterService;
@@ -53,19 +55,13 @@ public class MyTest {
 	private String book_list;
 	
 	@Test
-	@Transactional
 	public void test1() {
-		
+		/*List<User> list = userService.findAll();
+		for (User user : list) {
+			String json = GsonUtils.toJson(user);
+			System.out.println(json);
+		}*/
 	}
-	
-	
-	@Test
-	public void test2() {
-		
-		BookChapter chapter = chapterService.findById("ZXgzY2NxRE9STFY0SmNPbjBad1RYQT09");
-		System.out.println(GsonUtils.toJson(chapter));
-	}
-	
 
 	public static void main(String[] args) throws IOException {
 		String url = "http://www.88dushu.com/xiaoshuo/67/67371/";

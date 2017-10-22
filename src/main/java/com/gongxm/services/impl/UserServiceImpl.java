@@ -1,5 +1,7 @@
 package com.gongxm.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -49,6 +51,11 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@Override
 	public User findUserByOpenId(String openid) {
 		return udao.findUserByOpenId(openid);
+	}
+
+	@Override
+	public List<User> findAll() {
+		return udao.findAll();
 	}
 
 	

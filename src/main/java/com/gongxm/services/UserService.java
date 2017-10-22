@@ -1,5 +1,7 @@
 package com.gongxm.services;
 
+import java.util.List;
+
 import com.gongxm.bean.User;
 
 public interface UserService extends Service<User>{
@@ -13,5 +15,7 @@ public interface UserService extends Service<User>{
 	User findUserByThirdSession(String thirdSession);
 
 	User findUserByOpenId(String openid);
+
+	List<User> findAll();
 
 }

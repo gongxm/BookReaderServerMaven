@@ -3,8 +3,10 @@ package com.gongxm.dao.impl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -76,5 +78,15 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
 			return user;
 		}
 
+	}
+
+	@Override
+	public List<User> findAll() {
+		String sql = "select id,username,avatarUrl,permissions,registTime from user";
+		try {
+			return qr.query(sql, new BeanListHandler<User>(User.class));
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.gongxm.action;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -110,8 +111,7 @@ public class UserAction extends BaseAction {
 		write(json);
 
 	}
-	
-	
+
 	@Action("saveUserInfo")
 	public void saveUserInfo() {
 		ResponseResult result = new ResponseResult(MyConstants.FAILURE, "用户信息存储失败!");
@@ -151,27 +151,27 @@ public class UserAction extends BaseAction {
 		String json = GsonUtils.toJson(result);
 		write(json);
 	}
-	
+
 	@Action("getUserInfo")
 	public void getUserInfo() {
 		UserInfo info = new UserInfo();
 		try {
 			ThirdSessionParam param = GsonUtils.fromJson(getData(), ThirdSessionParam.class);
-			if(param!=null){
+			if (param != null) {
 				String thirdSession = param.getThirdSession();
-				if(TextUtils.notEmpty(thirdSession)){
+				if (TextUtils.notEmpty(thirdSession)) {
 					User user = userService.findUserByThirdSession(thirdSession);
-					if(user!=null){
+					if (user != null) {
 						info.setUser(user);
 						info.setErrcode(MyConstants.SUCCESS);
 						info.setErrmsg("获取用户信息成功!");
-					}else{
+					} else {
 						info.setErrmsg("用户不存在!");
 					}
-				}else{
+				} else {
 					info.setErrmsg("thirdSession为空");
 				}
-			}else{
+			} else {
 				info.setErrmsg("参数为空");
 			}
 		} catch (Exception e) {
@@ -179,12 +179,11 @@ public class UserAction extends BaseAction {
 			info.setErrmsg(StringConstants.JSON_PARSE_ERROR);
 		}
 		String json = GsonUtils.toJson(info);
-		
+
 		write(json);
 	}
-	
-	
-	//验证用户名
+
+	// 验证用户名
 	@Action("validateUserName")
 	public void validateUserName() {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -201,23 +200,82 @@ public class UserAction extends BaseAction {
 		String json = GsonUtils.toJson(result);
 		write(json);
 	}
-	
-	
-	//退出账号
+
+	// 退出账号
 	@Action("logout")
 	public void logout() throws IOException {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		request.getSession().removeAttribute("user");
-		Cookie cookie=new Cookie("user","");
+		Cookie cookie = new Cookie("user", "");
 		cookie.setPath(request.getContextPath());
 		cookie.setMaxAge(0);
-		
+
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.addCookie(cookie);
 		response.setCharacterEncoding(MyConstants.DEFAULT_ENCODING);
 		response.setContentType("text/html;charset=" + MyConstants.DEFAULT_ENCODING);
 		response.getWriter().write("<h1 align='center'><font color='green' size=5>注销成功！2秒后转到主页！</font></h1>");
-		response.setHeader("refresh", "2;url="+request.getContextPath());
+		response.setHeader("refresh", "2;url=" + request.getContextPath());
+	}
+
+	// 获取所有用户
+	@Action("getAllUser")
+	public void getAllUser() {
+		ThirdSessionParam param = GsonUtils.fromJson(getData(), ThirdSessionParam.class);
+		ResponseResult result = new ResponseResult();
+		if (param != null) {
+			String thirdSession = param.getThirdSession();
+			if (TextUtils.notEmpty(thirdSession)) {
+				User user = userService.findUserByThirdSession(thirdSession);
+				if (user != null) {
+					String permissions = user.getPermissions();
+					if (MyConstants.ROLE_ROOT.equals(permissions)) {
+						List<User> list = userService.findAll();
+						result.setResult(list);
+						result.setSuccess();
+					}
+				}
+			}
+		}
+		String json = GsonUtils.toJson(result);
+		write(json);
+	}
+
+	
+	//切换用户权限
+	@Action("changePermissions")
+	public void changePermissions() {
+		ThirdSessionParam param = GsonUtils.fromJson(getData(), ThirdSessionParam.class);
+		ResponseResult result = new ResponseResult();
+		if (param != null) {
+			int id = param.getId();
+			if(id>0) {
+				String thirdSession = param.getThirdSession();
+				if(TextUtils.notEmpty(thirdSession)) {
+					User manager = userService.findUserByThirdSession(thirdSession);
+					if (manager != null) {
+						String permissions = manager.getPermissions();
+						if (MyConstants.ROLE_ROOT.equals(permissions)) {
+							User user = userService.findById(id);
+							if(user!=null) {
+								String perm = user.getPermissions();
+								if(MyConstants.ROLE_USER.equals(perm)) {
+									user.setPermissions(MyConstants.ROLE_TEST);
+								}else {
+									user.setPermissions(MyConstants.ROLE_USER);
+								}
+								userService.update(user);
+								result.setSuccess();
+							}
+						}
+					}	
+				}
+			}
+		}
+		
+		String json = GsonUtils.toJson(result);
+		write(json);
+
 	}
 
 }

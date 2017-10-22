@@ -1,6 +1,6 @@
 package com.gongxm.domain.request;
 
-public class ThirdSessionParam {
+public class ThirdSessionParam extends IDParam{
 	private String thirdSession;
 
 	public String getThirdSession() {
