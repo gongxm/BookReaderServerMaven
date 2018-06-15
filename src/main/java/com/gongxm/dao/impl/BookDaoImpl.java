@@ -29,7 +29,7 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 
 	@Value("${book_list}")
 	private String book_list;
-	
+
 	@Value("${chapter_list}")
 	private String chapter_list;
 
@@ -54,8 +54,8 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 		// 从缓存中删除数据
 		try {
 			Jedis jedis = RedisUtils.getJedis();
-			jedis.hdel(book_list, book.getId());//删除书籍信息
-			jedis.hdel(chapter_list, book.getId());//删除书籍章节列表缓存
+			jedis.hdel(book_list, book.getId());// 删除书籍信息
+			jedis.hdel(chapter_list, book.getId());// 删除书籍章节列表缓存
 			jedis.close();
 		} catch (Exception e) {
 			if (MyConstants.DEBUG) {
@@ -76,18 +76,12 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Book> getCategoryList(String category, int currentPage, int pageSize) {
-		try {
-			DetachedCriteria criteria = DetachedCriteria.forClass(Book.class);
-			criteria.add(Restrictions.eq("category", category));
-			List<Book> list = (List<Book>) hqlObj.findByCriteria(criteria, (currentPage - 1) * pageSize, pageSize);
-			return list;
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
+		String sql = "select * from books where category=? limit ?,?";
+		List<Book> list = sqlObj.query(sql, new Object[] { category, (currentPage - 1) * pageSize, pageSize },
+				new BookItemMap());
+		return list;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -104,8 +98,6 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 		}
 		return null;
 	}
-	
-	
 
 	public Book findByUuid(String uuid) {
 
@@ -128,6 +120,7 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 		Book book = null;
 		try {
 			book = sqlObj.queryForObject(sql, new BookMap(), uuid);
+			// book = findById(uuid);
 		} catch (DataAccessException e) {
 			if (MyConstants.DEBUG) {
 				e.printStackTrace();
@@ -163,11 +156,29 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 			book.setStatus(rs.getString("status"));
 			book.setRulesId(rs.getInt("rulesId"));
 			book.setCollectStatus(rs.getInt("collectStatus"));
+
+			book.setLastChapter(rs.getString("lastChapter"));
+			book.setLastUpdateTime(rs.getLong("lastUpdateTime"));
+			book.setChapterCount(rs.getInt("chapterCount"));
 			return book;
 		}
 
 	}
-	
+
+	class BookItemMap implements RowMapper<Book> {
+		@Override
+		public Book mapRow(ResultSet rs, int i) throws SQLException {
+			Book book = new Book();
+			book.setId(rs.getString("id"));
+			book.setBook_name(rs.getString("book_name"));
+			book.setAuthor(rs.getString("author"));
+			book.setCover(rs.getString("cover"));
+			book.setLastChapter(rs.getString("lastChapter"));
+			return book;
+		}
+
+	}
+
 	@Override
 	public void deleteById(int id) {
 
@@ -185,6 +196,25 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao {
 				}
 			}
 		}
+	}
+
+	@Override
+	public List<Book> findBookByCategory(String category, int count) {
+		String sql = "select id,book_name,author,cover,lastChapter from books where category=? order by rand() limit ?";
+		List<Book> list = sqlObj.query(sql, new Object[] { category, count }, new BookItemMap());
+		return list;
+	}
+
+	@Override
+	public long getBookCountByCategory(String category) {
+		try {
+			String sql = "select count(id) from books where category=?";
+			Long count = sqlObj.queryForObject(sql, new Object[] { category }, Long.class);
+			return count;
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }

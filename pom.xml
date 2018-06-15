@@ -12,7 +12,6 @@
 		<struts2.version>2.5.13</struts2.version>
 		<jdk.version>1.8</jdk.version>
 	</properties>
-
 	<!-- 插件 -->
 	<build>
 		<plugins>
@@ -154,12 +153,7 @@
 		</dependency>
 		<!-- 添加其他依赖 -->
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
+	
 
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -215,6 +209,16 @@
 			<version>3.2.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.44</version>
+		</dependency>
 	</dependencies>
 
 </project>

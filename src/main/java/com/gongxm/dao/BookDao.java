@@ -16,4 +16,8 @@ public interface BookDao extends Dao<Book> {
 
 	public Book findByUuid(String uuid);
 
+	List<Book> findBookByCategory(String category, int count);
+	
+	public long getBookCountByCategory(String category);
+
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+   
+		<!-- 
+        Spring整合Quartz进行配置遵循下面的步骤：
+        1：定义工作任务的Job
+        2：定义触发器Trigger，并将触发器与工作任务绑定
+        3：定义调度器，并将Trigger注册到Scheduler
+     -->
+   
+    <!-- For times when you need more complex processing, passing data to the scheduled job -->  
+    <bean name="UpdateBookInfo"    class="org.springframework.scheduling.quartz.JobDetailFactoryBean">  
+        <property name="jobClass" value="com.gongxm.quartz.UpdateBookInfo" />  
+        <property name="durability" value="true" />  
+    </bean>  
+      
+ 
+    <bean name="UpdateAllBooks"    class="org.springframework.scheduling.quartz.JobDetailFactoryBean">  
+        <property name="jobClass" value="com.gongxm.quartz.UpdateAllBooks" />  
+        <property name="durability" value="true" />  
+    </bean> 
+    
+    <bean name="UpdateUserBooks"    class="org.springframework.scheduling.quartz.JobDetailFactoryBean">  
+        <property name="jobClass" value="com.gongxm.quartz.UpdateUserBooks" />  
+        <property name="durability" value="true" />  
+    </bean> 
+  <!--start                                  end-->     
+   
+ 
+    <bean id="UpdateBookInfoCron"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="UpdateBookInfo" />  
+        <property name="cronExpression" value="0 0 0/3 * * ? *" />  
+          
+    </bean>  
+      
+ 
+    <bean id="UpdateAllBooksCron"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="UpdateAllBooks" />  
+        <property name="cronExpression" value="0 0 0/2 * * ? *" />  
+    </bean>  
+   
+     <bean id="UpdateUserBooksCron"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="UpdateUserBooks" />  
+        <property name="cronExpression" value="0 0 0/2 * * ? *" />  
+    </bean> 
+  <!--start                                  end-->  
+     
+    <!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->  
+    <bean  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+        <property name="jobDetails">  
+            <list>  
+                <ref bean="UpdateBookInfo" />  
+                <ref bean="UpdateAllBooks" />  
+                <ref bean="UpdateUserBooks" />  
+            </list>  
+        </property>  
+        
+   
+        <property name="triggers">  
+            <list>  
+                <ref bean="UpdateBookInfoCron" />  
+                <ref bean="UpdateAllBooksCron" />  
+                <ref bean="UpdateUserBooksCron" />  
+            </list>  
+        </property>  
+        
+    </bean> 
+
+
+</beans>

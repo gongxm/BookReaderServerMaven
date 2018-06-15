@@ -85,6 +85,7 @@ $(document).ready(
 // 悬浮框居中显示
 $(document).ready(function() {
 	$("#add").click(function() {
+		$("form[name=rulesform]").attr('action', 'addRules');
 		$("#operate").text("添加新规则");
 		$("#bt_submit").val("添加新规则");
 		$("#id").val('');
@@ -172,10 +173,10 @@ $(document).ready(function() {
 				if ("success" == textStatus) {
 					if (data.errcode == 1) {
 						alert("操作成功!")
+						window.location.reload();
 					} else {
 						alert("操作失败!")
 					}
-					window.location.reload();
 				} else {
 					alert("请求失败,请重试!")
 				}

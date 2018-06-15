@@ -1,5 +1,6 @@
 package com.gongxm.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.gongxm.bean.BookChapter;
@@ -17,5 +18,7 @@ public interface BookChapterDao extends Dao<BookChapter> {
 	public BookChapter findByChapterId(String uuid);
 
 	int findChapterCountByBookId(String bookId);
+
+	void addAll(ArrayList<BookChapter> list);
 
 }

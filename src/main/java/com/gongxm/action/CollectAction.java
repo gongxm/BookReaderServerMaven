@@ -76,7 +76,8 @@ public class CollectAction extends BaseAction {
 	public void collectBookInfo() {
 		WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
 		ResponseResult result = new ResponseResult();
-		CollectParam param = GsonUtils.fromJson(getData(), CollectParam.class);
+		String data = getData();
+		CollectParam param = GsonUtils.fromJson(data, CollectParam.class);
 		if (param != null) {
 			int id = param.getId();
 			if (id > 0) {

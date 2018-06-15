@@ -1,9 +1,9 @@
 package com.gongxm.dao.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
-import org.hibernate.criterion.DetachedCriteria;
-import org.springframework.dao.DataAccessException;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.springframework.stereotype.Repository;
 
 import com.gongxm.bean.BookInfoAndChapterListRules;
@@ -14,14 +14,13 @@ public class BookInfoAndChapterListRulesDaoImpl extends BaseDao<BookInfoAndChapt
 		implements BookInfoAndChapterListRulesDao {
 	
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<BookInfoAndChapterListRules> findAll() {
+		
 		try {
-			DetachedCriteria criteria = DetachedCriteria.forClass(BookInfoAndChapterListRules.class);
-			List<BookInfoAndChapterListRules> list = (List<BookInfoAndChapterListRules>) hqlObj.findByCriteria(criteria);
-			return list;
-		} catch (DataAccessException e) {
+			return qr.query("select * from book_info_and_chapter_list_rules",
+					new BeanListHandler<BookInfoAndChapterListRules>(BookInfoAndChapterListRules.class));
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;

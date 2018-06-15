@@ -90,7 +90,7 @@ public class CollectUtils {
 
 				List<BookList> list = service.findUnCollectBookListBySource(book_source, currentPage, pageSize);
 				for (BookList bookList : list) {
-					BookInfoRunnable task = new BookInfoRunnable(context, bookList.getBook_link(), rules);
+					BookInfoRunnable task = new BookInfoRunnable(context, bookList.getBook_link(), rules,bookListRules.getRulesName());
 					ThreadPoolUtils.executeOnNewThread(task);
 				}
 				currentPage++;
@@ -113,7 +113,7 @@ public class CollectUtils {
 			while (currentPage <= page) {
 				List<BookList> list = service.findAllUnCollectBookList(currentPage, pageSize);
 				for (BookList bookList : list) {
-					BookInfoRunnable task = new BookInfoRunnable(context, bookList.getBook_link(), rules);
+					BookInfoRunnable task = new BookInfoRunnable(context, bookList.getBook_link(), rules,bookListRules.getRulesName());
 					ThreadPoolUtils.executeOnNewThread(task);
 				}
 				currentPage++;
@@ -127,7 +127,7 @@ public class CollectUtils {
 		}
 	}
 
-	// 采集书籍信息
+	// 更新书籍信息
 	private static void updateBookInfo(WebApplicationContext context, BookListRules bookListRules,
 			BookListService service, BookInfoAndChapterListRules rules) {
 		System.out.println("============================开始更新书籍信息===============================");
@@ -147,12 +147,12 @@ public class CollectUtils {
 			while (currentPage <= page) {
 				List<BookList> list = service.findBookListBySource(book_source, currentPage, pageSize);
 				for (BookList bookList : list) {
-					BookInfoRunnable task = new BookInfoRunnable(context, bookList.getBook_link(), rules);
+					BookInfoRunnable task = new BookInfoRunnable(context, bookList.getBook_link(), rules,bookListRules.getRulesName());
 					ThreadPoolUtils.executeOnNewThread(task);
 				}
 				currentPage++;
 				try {
-					Thread.sleep(MyConstants.BOOK_COLLECT_INTERVAL);
+					Thread.sleep(MyConstants.BOOK_UPDATE_INTERVAL);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

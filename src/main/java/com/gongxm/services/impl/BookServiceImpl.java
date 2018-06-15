@@ -48,7 +48,15 @@ public class BookServiceImpl extends BaseService<Book> implements BookService {
 	public void deleteById(int id) {
 		dao.deleteById(id);
 	}
-	
-	
 
+	@Override
+	public List<Book> findBookByCategory(String category,int count) {
+		
+		return dao.findBookByCategory(category,count);
+	}
+
+	@Override
+	public long getBookCountByCategory(String category) {
+		return dao.getBookCountByCategory(category);
+	}
 }

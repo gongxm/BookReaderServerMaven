@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.gongxm.utils.FileUtils;
 import com.gongxm.utils.TextUtils;
 
+@Deprecated
 @WebServlet("/getImage")
 public class GetImage extends HttpServlet {
 	private static final long serialVersionUID = 1L;

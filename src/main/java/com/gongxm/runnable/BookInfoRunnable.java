@@ -2,6 +2,8 @@ package com.gongxm.runnable;
 
 import org.hibernate.SessionFactory;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.gongxm.bean.Book;
@@ -18,6 +20,7 @@ public class BookInfoRunnable implements Runnable {
 	private BookInfoAndChapterListRules rules;
 	private WebApplicationContext context;
 	private String bookUrl;
+	private String category;
 
 	// 标题
 	// String titleRegex;
@@ -32,10 +35,11 @@ public class BookInfoRunnable implements Runnable {
 	// // 简介
 	// String shortIntroduceRegex;
 
-	public BookInfoRunnable(WebApplicationContext context, String bookUrl, BookInfoAndChapterListRules rules) {
+	public BookInfoRunnable(WebApplicationContext context, String bookUrl, BookInfoAndChapterListRules rules, String category) {
 		this.bookUrl = bookUrl;
 		this.rules = rules;
 		this.context = context;
+		this.category=category;
 	}
 
 	@Override
@@ -45,26 +49,49 @@ public class BookInfoRunnable implements Runnable {
 		try {
 			BookListService bookListService = (BookListService) context.getBean("bookListService");
 			BookService bookService = (BookService) context.getBean("bookService");
-			if (MyConstants.DEBUG) {
+			if (MyConstants.SHOW_INFO) {
 				System.out.println("正在采集:" + bookUrl);
 			}
 			Document doc = HtmlParser.getDocument(bookUrl);
 			String cover = doc.select(rules.getCoverRegex()).first().attr("content");
 			String title = doc.select(rules.getTitleRegex()).first().attr("content");
 			String author = doc.select(rules.getAuthorRegex()).first().attr("content");
-			String category = doc.select(rules.getCategoryRegex()).first().attr("content");
+//			String category = doc.select(rules.getCategoryRegex()).first().attr("content");
 			String shortIntroduce = doc.select(rules.getShortIntroduceRegex()).first().attr("content");
 			String status = doc.select(rules.getStatusRegex()).first().attr("content");
 			BookList bookList = bookListService.findByBookLink(bookUrl);
+			
+			shortIntroduce = shortIntroduce.trim().equals("")?"暂无":shortIntroduce;
+
+			Document doc2 = HtmlParser.getDocument(bookUrl);
+			Element contentDiv = doc2.select(rules.getContentDivClass()).first();
+
+			String lastChapter = "暂无";
+			long lastUpdateTime = System.currentTimeMillis();
+			int chapterCount = 0;
+			if (contentDiv != null) {
+				Elements elements = contentDiv.select("a");
+				if (elements != null && elements.size() > 0) {
+					chapterCount = elements.size();
+					Element element = elements.get(chapterCount - 1);
+					lastChapter = element.text();
+				}
+			}
 			try {
 				String bookId = MD5Utils.creatID(bookUrl);
 				Book book = bookService.findByBookId(bookId);
 				if (book == null) {
 					book = new Book(bookId, title, author, category, status, cover, shortIntroduce, bookUrl,
 							rules.getId());
+					book.setLastChapter(lastChapter);
+					book.setLastUpdateTime(lastUpdateTime);
+					book.setChapterCount(chapterCount);
 					bookService.add(book);
 					bookList.setStatus(MyConstants.BOOK_COLLECTED);
 				} else {
+					book.setLastChapter(lastChapter);
+					book.setLastUpdateTime(lastUpdateTime);
+					book.setChapterCount(chapterCount);
 					book.setStatus(status);
 					book.setCover(cover);
 					book.setShortIntroduce(shortIntroduce);
@@ -81,10 +108,12 @@ public class BookInfoRunnable implements Runnable {
 		} catch (Exception e) {
 			if (MyConstants.DEBUG) {
 				e.printStackTrace();
-				System.out.println("采集出错======================================================");
+			}
+			if (MyConstants.SHOW_INFO) {
+				System.out.println("采集出错========"+bookUrl);
 			}
 		} finally {
-			if (MyConstants.DEBUG) {
+			if (MyConstants.SHOW_INFO) {
 				System.out.println("======采集完成=====");
 			}
 			ConcurrentUtils.closeHibernateSessionFromThread(participate, sessionFactory);

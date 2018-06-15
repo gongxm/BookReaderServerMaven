@@ -3,6 +3,7 @@ package com.gongxm.utils;
 public class MyConstants {
 	// 是否调试程序
 	public static final boolean DEBUG = false;
+	public static final boolean SHOW_INFO = true;
 
 	public static final String DEFAULT_ENCODING = "UTF-8";
 	public static final int FAILURE = 0;
@@ -27,8 +28,18 @@ public class MyConstants {
 	public static final int BOOK_COLLECTE_ING = 3;// 在采集中
 
 	public static final int BOOK_COLLECT_INTERVAL = 10;// 采集时间间隔
+	public static final int BOOK_UPDATE_INTERVAL = 1000;// 更新采集时间间隔
 	public static final String SOLR_QUERY_BOOK_URL = "http://127.0.0.1:8080/solr/book_core";
 	public static final String SOLR_QUERY_CHAPTER_URL = "http://127.0.0.1:8080/solr/chapter_core";
 	public static final int DELAY_TIME = 2000; // 间隔时间检查任务是否完成
+	
+	//推荐书籍数量
+	public static final int BOOK_DETAIL_RECOMMEND = 4; 
+	public static final int READ_FINISH_RECOMMEND_CATEGORY = 9; 
+	public static final int READ_FINISH_RECOMMEND_RANDOM = 6; 
+	
+	//书籍详情信息类型
+	public static final String BOOK_DETAIL_NORMAL_TYPE = "normal";
+	public static final String BOOK_DETAIL_SIMPLE_TYPE = "simple";
 
 }

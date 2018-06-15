@@ -61,9 +61,11 @@ public class RedisUtils {
 				return null;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			if(MyConstants.DEBUG) {
+				e.printStackTrace();
+			}
 		}
+		return null;
 	}
 
 }

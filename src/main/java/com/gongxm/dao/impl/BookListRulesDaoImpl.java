@@ -4,8 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.hibernate.criterion.DetachedCriteria;
-import org.springframework.dao.DataAccessException;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -15,14 +14,12 @@ import com.gongxm.dao.BookListRulesDao;
 @Repository
 public class BookListRulesDaoImpl extends BaseDao<BookListRules> implements BookListRulesDao {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<BookListRules> findAll() {
 		try {
-			DetachedCriteria criteria = DetachedCriteria.forClass(BookListRules.class);
-			List<BookListRules> list = (List<BookListRules>) hqlObj.findByCriteria(criteria);
-			return list;
-		} catch (DataAccessException e) {
+			return qr.query("select * from book_list_rules",
+					new BeanListHandler<BookListRules>(BookListRules.class));
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;

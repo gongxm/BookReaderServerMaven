@@ -6,16 +6,18 @@ public class CategoryItem {
 	private String id;
 	private String book_name;
 	private String author;
+	private String lastChapter;
 	private String cover;
-	
+
 	public CategoryItem() {
 	}
-	
+
 	public CategoryItem(Book book) {
 		this.id = book.getId();
 		this.book_name = book.getBook_name();
 		this.author = book.getAuthor();
 		this.cover = book.getCover();
+		this.lastChapter = book.getLastChapter();
 	}
 
 	public String getId() {
@@ -48,6 +50,14 @@ public class CategoryItem {
 
 	public void setCover(String cover) {
 		this.cover = cover;
+	}
+
+	public String getLastChapter() {
+		return lastChapter;
+	}
+
+	public void setLastChapter(String lastChapter) {
+		this.lastChapter = lastChapter;
 	}
 
 }

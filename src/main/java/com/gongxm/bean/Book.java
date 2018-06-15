@@ -39,6 +39,15 @@ public class Book implements Serializable {
 	@Expose
 	private int collectStatus;// 采集状态
 
+	// 新增最新章节和最后更新时间
+	@Expose
+	private String lastChapter;
+	@Expose
+	private long lastUpdateTime;
+	// 章节总数量
+	@Expose
+	private int chapterCount;
+
 	public Book() {
 	}
 
@@ -136,11 +145,69 @@ public class Book implements Serializable {
 		this.collectStatus = collectStatus;
 	}
 
+	public String getLastChapter() {
+		return lastChapter;
+	}
+
+	public void setLastChapter(String lastChapter) {
+		this.lastChapter = lastChapter;
+	}
+
+	public long getLastUpdateTime() {
+		return lastUpdateTime;
+	}
+
+	public void setLastUpdateTime(long lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
+	}
+
+	public int getChapterCount() {
+		return chapterCount;
+	}
+
+	public void setChapterCount(int chapterCount) {
+		this.chapterCount = chapterCount;
+	}
+	
+	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((author == null) ? 0 : author.hashCode());
+		result = prime * result + ((book_name == null) ? 0 : book_name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Book other = (Book) obj;
+		if (author == null) {
+			if (other.author != null)
+				return false;
+		} else if (!author.equals(other.author))
+			return false;
+		if (book_name == null) {
+			if (other.book_name != null)
+				return false;
+		} else if (!book_name.equals(other.book_name))
+			return false;
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return "Book [id=" + id + ", book_name=" + book_name + ", author=" + author + ", category=" + category
 				+ ", cover=" + cover + ", status=" + status + ", book_link=" + book_link + ", shortIntroduce="
-				+ shortIntroduce + "]";
+				+ shortIntroduce + ", rulesId=" + rulesId + ", collectStatus=" + collectStatus + ", lastChapter="
+				+ lastChapter + ", lastUpdateTime=" + lastUpdateTime + ", chapterCount=" + chapterCount + "]";
 	}
 
 }

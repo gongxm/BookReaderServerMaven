@@ -1,7 +1,10 @@
 package com.gongxm.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -29,11 +32,12 @@ public class BookChapterDaoImpl extends BaseDao<BookChapter> implements BookChap
 
 	@Value("${chapter}")
 	private String chapter_key;
+	
+	
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<BookChapter> findByBookId(String bookid) {
-
 		// 先从缓存中查询
 		try {
 			Jedis jedis = RedisUtils.getJedis();
@@ -196,5 +200,28 @@ public class BookChapterDaoImpl extends BaseDao<BookChapter> implements BookChap
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public void addAll(ArrayList<BookChapter> list) {
+		try {
+			Connection con = dataSource.getConnection();
+			String sql = "insert into book_chapters (id,bookid,chapter_link,chapter_name,position,rulesId,status) values(?,?,?,?,?,?,?)";
+			PreparedStatement pst = con.prepareStatement(sql);
+			
+			for (BookChapter chapter : list) {
+				pst.setString(1,chapter.getId());
+				pst.setString(2, chapter.getBookId());
+				pst.setString(3, chapter.getChapter_link());
+				pst.setString(4, chapter.getChapter_name());
+				pst.setInt(5, chapter.getPosition());
+				pst.setInt(6, chapter.getRulesId());
+				pst.setInt(7, chapter.getStatus());
+				pst.addBatch();
+			}
+			pst.executeBatch();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

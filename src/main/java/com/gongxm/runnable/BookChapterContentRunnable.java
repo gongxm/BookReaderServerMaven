@@ -36,7 +36,7 @@ public class BookChapterContentRunnable implements Runnable {
 		try {
 			chapter.setStatus(MyConstants.BOOK_COLLECTE_ING);
 			service.update(chapter);
-			if (MyConstants.DEBUG) {
+			if (MyConstants.SHOW_INFO) {
 				System.out.println("colleting:" + chapter.getChapter_name());
 			}
 			Document doc = HtmlParser.getDocument(url);
@@ -50,16 +50,16 @@ public class BookChapterContentRunnable implements Runnable {
 				chapter.setStatus(MyConstants.BOOK_COLLECT_FAILURE);
 			}
 			service.update(chapter);
-			if (MyConstants.DEBUG) {
-				System.out.println("collect success..." + chapter.getId());
+			if (MyConstants.SHOW_INFO) {
+				System.out.println("collect success...");
 			}
 		} catch (Exception e) {
-			if (MyConstants.DEBUG) {
+			if (MyConstants.SHOW_INFO) {
 				System.out.println("collect error....");
 				e.printStackTrace();
 			}
 		} finally {
-			if (MyConstants.DEBUG) {
+			if (MyConstants.SHOW_INFO) {
 				System.out.println("collect finish....");
 			}
 			int status = chapter.getStatus();

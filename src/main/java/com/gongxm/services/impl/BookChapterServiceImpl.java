@@ -1,5 +1,6 @@
 package com.gongxm.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,11 @@ public class BookChapterServiceImpl extends BaseService<BookChapter> implements 
 	@Override
 	public int findChapterCountByBookId(String bookId) {
 		return dao.findChapterCountByBookId(bookId);
+	}
+
+	@Override
+	public void addAll(ArrayList<BookChapter> list) {
+		dao.addAll(list);
 	}
 
 	/*@Override

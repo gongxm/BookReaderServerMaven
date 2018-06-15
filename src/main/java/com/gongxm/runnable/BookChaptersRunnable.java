@@ -1,5 +1,7 @@
 package com.gongxm.runnable;
 
+import java.util.ArrayList;
+
 import org.hibernate.SessionFactory;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -41,8 +43,8 @@ public class BookChaptersRunnable implements Runnable {
 		try {
 			book.setCollectStatus(MyConstants.BOOK_COLLECTE_ING);
 			bookService.update(book);
-			if (MyConstants.DEBUG) {
-				System.out.println("采集中.." + book.getBook_name());
+			if (MyConstants.SHOW_INFO) {
+				System.out.println("采集中-开始采集章节目录-.." + book.getBook_name());
 			}
 			Document doc = HtmlParser.getDocument(bookUrl);
 			Element contentDiv = doc.select(rules.getContentDivClass()).first();
@@ -59,37 +61,44 @@ public class BookChaptersRunnable implements Runnable {
 						}
 						startIndex = count;
 					}
+					
+					ArrayList<BookChapter> list = new ArrayList<BookChapter>();
 
 					for (int i = startIndex; i < elements.size(); i++) {
 						Element e = elements.get(i);
 						String chapterLink = e.absUrl("href");
 						String chapterTitle = e.text();
 						String uuid = MD5Utils.creatID(chapterLink);
-						if (MyConstants.DEBUG) {
-							System.out.println("----采集章节目录-------" + chapterTitle);
-						}
+				
 						try {
 							BookChapter bookChapter = new BookChapter(uuid, chapterTitle, chapterLink, i, book.getId(),
 									rules.getId());
-							chapterService.add(bookChapter);
+							list.add(bookChapter);
+							
+							if(i==elements.size()-1) {
+								book.setLastChapter(chapterTitle);
+							}
 						} catch (Exception e1) {
 							if (MyConstants.DEBUG) {
 								e1.printStackTrace();
-								System.out.println("出错链接:" + chapterLink + ", md5=" + uuid);
 							}
 						}
 					}
+					
+					chapterService.addAll(list);
+
 				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			book.setLastUpdateTime(System.currentTimeMillis());
 			book.setCollectStatus(MyConstants.BOOK_COLLECTED);
 			bookService.update(book);
 			ConcurrentUtils.closeHibernateSessionFromThread(participate, sessionFactory);
-			if (MyConstants.DEBUG) {
-				System.out.println("采集完成..." + book.getBook_name());
+			if (MyConstants.SHOW_INFO) {
+				System.out.println("目录采集完成..." + book.getBook_name());
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package com.gongxm.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -10,8 +11,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.gongxm.bean.Book;
+import com.gongxm.domain.CategoryItem;
 import com.gongxm.domain.request.SearchParam;
-import com.gongxm.domain.response.ResponseResult;
+import com.gongxm.domain.response.CategoryBookListResp;
 import com.gongxm.services.BookService;
 import com.gongxm.utils.GsonUtils;
 
@@ -28,16 +30,24 @@ public class SearchAction extends BaseAction {
 	@Action("search")
 	public void search() {
 		SearchParam param = GsonUtils.fromJson(getData(), SearchParam.class);
-		ResponseResult result = new ResponseResult();
+		CategoryBookListResp result = new CategoryBookListResp();
 		if(param!=null) {
 			String keyword = param.getKeyword();
 			int currentPage = param.getCurrentPage();
 			int pageSize = param.getPageSize();
-			List<Book> list = bookService.findListByKeyword(keyword,currentPage,pageSize);
-			result.setResult(list);
-			result.setSuccess();
+			result.setCurrentPage(currentPage);
+			List<Book> books = bookService.findListByKeyword(keyword,currentPage,pageSize);
+			if (books != null && books.size() > 0) {
+				List<CategoryItem> items = new ArrayList<CategoryItem>();
+				for (Book book : books) {
+					CategoryItem item = new CategoryItem(book);
+					items.add(item);
+				}
+				result.setResult(items);
+				result.setSuccess();
+			}
 		}
-		String json = GsonUtils.parseToJson(result);
+		String json = GsonUtils.toJson(result);
 		write(json);
 	}
 

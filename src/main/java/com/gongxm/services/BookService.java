@@ -16,4 +16,9 @@ public interface BookService extends Service<Book> {
 
 	void deleteById(int id);
 
+	/**根据类别,随机推荐四本书籍
+	 * @param count */
+	List<Book> findBookByCategory(String category, int count);
+
+	long getBookCountByCategory(String category);
 }

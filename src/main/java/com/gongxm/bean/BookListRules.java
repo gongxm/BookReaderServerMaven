@@ -141,4 +141,12 @@ public class BookListRules implements Serializable {
 		this.rules = rules;
 	}
 
+	@Override
+	public String toString() {
+		return "BookListRules [id=" + id + ", rulesName=" + rulesName + ", book_source=" + book_source + ", baseUrl="
+				+ baseUrl + ", flag=" + flag + ", startIndex=" + startIndex + ", endIndex=" + endIndex
+				+ ", contentDivClass=" + contentDivClass + ", regex=" + regex + ", isRepeat=" + isRepeat + ", rules="
+				+ rules + "]";
+	}
+
 }

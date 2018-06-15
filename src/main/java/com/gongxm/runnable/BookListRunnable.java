@@ -35,7 +35,7 @@ public class BookListRunnable implements Runnable {
 		try {
 			WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
 			BookListService service = (BookListService) context.getBean("bookListService");
-			if (MyConstants.DEBUG) {
+			if (MyConstants.SHOW_INFO) {
 				System.out.println("采集:" + url);
 			}
 			Document doc = HtmlParser.getDocument(url);
@@ -62,7 +62,7 @@ public class BookListRunnable implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (MyConstants.DEBUG) {
+			if (MyConstants.SHOW_INFO) {
 				System.out.println("----完成----");
 			}
 		}
